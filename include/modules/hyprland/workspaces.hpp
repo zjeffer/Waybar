@@ -11,11 +11,12 @@
 #include "AModule.hpp"
 #include "bar.hpp"
 #include "modules/hyprland/backend.hpp"
-#include "util/enum.hpp"
 
 namespace waybar::modules::hyprland {
 
 class Workspaces;
+
+enum class SORT_METHOD { ID = 0, NAME, NUMBER, DEFAULT };
 
 class Workspace {
  public:
@@ -87,8 +88,7 @@ class Workspaces : public AModule, public EventHandler {
   bool all_outputs_ = false;
   bool show_special_ = false;
   bool active_only_ = false;
-  util::EnumParser enum_parser_;
-  util::EnumParser::SORT_METHOD sort_by_ = util::EnumParser::SORT_METHOD::DEFAULT;
+  SORT_METHOD sort_by_ = SORT_METHOD::DEFAULT;
 
   void fill_persistent_workspaces();
   void create_persistent_workspaces();
