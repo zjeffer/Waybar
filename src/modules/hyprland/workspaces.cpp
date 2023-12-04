@@ -47,7 +47,7 @@ Workspaces::Workspaces(const std::string &id, const Bar &bar, const Json::Value 
   }
   event_box_.add(m_box);
 
-  if (!gIPC) {
+  if (!gIPC.get()) {
     gIPC = std::make_unique<IPC>();
   }
 
