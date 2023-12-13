@@ -9,10 +9,6 @@ jobs:
       image: alexays/waybar:debian
     steps:
       - uses: actions/checkout@v3
-      - name: Install dependencies
-        run: |
-          apt update 
-          apt install sudo python3-pip python3-venv -y
       - name: configure
         run: |
           meson -Dcpp_std=c++20 build  # necessary to generate compile_commands.json
