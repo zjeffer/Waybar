@@ -16,8 +16,12 @@ jobs:
       - name: configure
         run: |
           meson -Dcpp_std=c++20 build  # necessary to generate compile_commands.json
+      - name: install cppcheck
+        run: |
+          apt update && apt install -y cppcheck
       - name: cppcheck
-        run: cppcheck --enable=all --inconclusive --force --inline-suppr --quiet --xml-version=2 --xml --project=build/compile_commands.json 2> cppcheck.xml
+        run: |
+          cppcheck --enable=all --inconclusive --force --inline-suppr --quiet --xml-version=2 --xml --project=build/compile_commands.json 2>&1 | tee cppcheck.xml
       - name: Upload cppcheck results
         uses: actions/upload-artifact@v2
         with:
