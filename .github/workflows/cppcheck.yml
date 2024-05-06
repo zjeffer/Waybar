@@ -21,7 +21,7 @@ jobs:
           apt update && apt install -y cppcheck
       - name: cppcheck
         run: |
-          cppcheck --enable=all --inconclusive --force --inline-suppr --quiet --xml-version=2 --xml --project=build/compile_commands.json 2>&1 | tee cppcheck.xml
+          cppcheck --enable=all --inconclusive --force --inline-suppr --quiet -i build/protocol/ --project=build/compile_commands.json 2>&1 | tee cppcheck.xml
       - name: Upload cppcheck results
         uses: actions/upload-artifact@v2
         with:
