@@ -1,0 +1,30 @@
+name: cppcheck
+
+on: [push, pull_request]
+
+concurrency:
+  group: ${{ github.workflow }}-cppcheck-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: alexays/waybar:debian
+    steps:
+      - uses: actions/checkout@v3
+      - name: configure
+        run: |
+          meson -Dcpp_std=c++20 build  # necessary to generate compile_commands.json
+          ninja -C build
+      - name: install cppcheck
+        run: |
+          apt update && apt install -y cppcheck
+      - name: cppcheck
+        run: |
+          cppcheck --enable=all --inconclusive --force --inline-suppr -i build/resources/ -i build/protocol --project=build/compile_commands.json --suppress='*:/usr/*' --suppress=missingIncludeSystem -v
+      # - name: Upload cppcheck results
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: cppcheck-results
+      #     path: cppcheck.log
