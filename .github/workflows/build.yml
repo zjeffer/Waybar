@@ -1,0 +1,20 @@
+name: Build
+
+on:
+  workflow_call:
+    outputs:
+      build_dir:
+        value: "build"
+        description: "The build directory"
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    container:
+      image: alexays/waybar:debian
+    steps:
+      - uses: actions/checkout@v3
+      - name: configure
+        run: |
+          meson setup -Dcpp_std=c++20 build
+          ninja -C build
